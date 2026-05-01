@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta http-equiv="refresh" content="600">
+    <meta name="google-site-verification" content="rLOMR4PL7PMZyephNkDjL8IsxTZkNuZDKKToXhMZDyM">
+    <meta name="description" content="Live Weather Dashboard - J.K. College Purulia & District Science Centre">
+    <title>J.K. College Purulia | Live Weather Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <!-- Header with logos -->
+        <header class="dashboard-header">
+            <div class="logo-group">
+                <img src="https://ncsm.gov.in/wp-content/uploads/2013/12/NCSM-Logo.png" alt="NCSM Logo" class="header-logo">
+                <div class="title-block">
+                    <h1>Jagannath Kishore College, Purulia</h1>
+                    <p>Collaboration with District Science Centre, Purulia</p>
+                    <span class="subtitle">A unit of National Council of Science Museums | Ministry of Culture, Government of India</span>
+                </div>
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/be/J._K._College_logo.png/250px-J._K._College_logo.png" alt="JK College Logo" class="header-logo">
+            </div>
+        </header>
+
+        <!-- Hero / Banner Section -->
+        <div class="hero-banner">
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h2>Live Weather Intelligence - Purulia</h2>
+                    <div class="datetime-badge" id="dateTime"></div>
+                    <div class="weather-icon-row">
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/066/165/758/small_2x/colorful-3d-global-weather-elements-with-sun-rain-and-cloud-png.png" alt="weather icon" class="floating-icon">
+                        <img src="https://cdn.dribbble.com/userupload/25398855/file/original-b39f61791073c4efb3ba40bf4167eb31.gif" alt="animated weather" class="floating-icon-gif">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main class="dashboard-main">
+            <!-- Loading Overlay -->
+            <div id="loadingOverlay" class="loading-overlay">
+                <div class="spinner"></div>
+                <p>Fetching live weather data for Purulia...</p>
+            </div>
+
+            <!-- Primary metrics grid -->
+            <div class="grid-primary">
+                <!-- Temperature Card -->
+                <div class="card card-temp">
+                    <div class="chart-overlay-bg">
+                        <canvas id="temperatureChart" class="temp-canvas-bg"></canvas>
+                    </div>
+                    <div class="temp-content">
+                        <div class="current-temp-section">
+                            <div class="thermo-wrapper">
+                                <div class="thermometer-viz">
+                                    <div class="mercury-fill" id="thermometer-mercury"></div>
+                                </div>
+                            </div>
+                            <div class="temp-numbers">
+                                <span class="big-temp" id="current-temp">--°C</span>
+                                <div class="temp-labels"><span>0°C</span><span>25°C</span><span>50°C</span></div>
+                            </div>
+                        </div>
+                        <div class="highlow-panel">
+                            <div class="hl-item"><i class="fas fa-arrow-up"></i> <span>High</span> <strong id="high-temp">--°C</strong></div>
+                            <div class="hl-item"><i class="fas fa-arrow-down"></i> <span>Low</span> <strong id="low-temp">--°C</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Sun & Moon Card -->
+                <div class="card card-sunmoon">
+                    <div class="card-header"><i class="fas fa-sun"></i><h3>Sun & Moon</h3><i class="fas fa-moon" style="margin-left:auto;"></i></div>
+                    <div class="sun-moon-grid">
+                        <div class="sun-section">
+                            <div class="sun-arc-container">
+                                <div class="sun-arc-bg"></div>
+                                <div class="sun-position-indicator" id="sun-position-indicator">
+                                    <div class="sun-icon-small">☀️</div>
+                                </div>
+                            </div>
+                            <div class="sun-times-enhanced">
+                                <div class="sun-time-item"><i class="fas fa-sunrise"></i><span>Sunrise</span><strong id="sunrise-time">--:--</strong></div>
+                                <div class="sun-time-item"><i class="fas fa-sunset"></i><span>Sunset</span><strong id="sunset-time">--:--</strong></div>
+                                <div class="sun-time-item"><i class="fas fa-clock"></i><span>Day Length</span><strong id="day-length">--h --m</strong></div>
+                            </div>
+                        </div>
+                        <div class="moon-section">
+                            <div class="moon-phase-visualizer">
+                                <div class="moon-outer">
+                                    <div class="moon-inner" id="moon-inner"></div>
+                                </div>
+                            </div>
+                            <div class="moon-info-panel">
+                                <div class="moon-details">
+                                    <span id="moon-phase-icon" class="moon-phase-icon">🌑</span>
+                                    <div class="moon-text-info">
+                                        <strong id="moon-phase-details">--</strong>
+                                        <span id="moon-illumination">--%</span>
+                                    </div>
+                                </div>
+                                <div class="moon-extra-info">
+                                    <div><i class="fas fa-arrow-up"></i> <span id="moonrise-time">--:--</span></div>
+                                    <div><i class="fas fa-arrow-down"></i> <span id="moonset-time">--:--</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wind Card -->
+                <div class="card card-wind">
+                    <div class="card-header"><i class="fas fa-wind"></i><h3>Wind Conditions</h3><span class="gust-badge">Gust: <span id="wind-gust">-- km/h</span></span></div>
+                    <div class="compass-wrapper">
+                        <div class="compass-ring">
+                            <div class="compass-marks"><span>N</span><span>NE</span><span>E</span><span>SE</span><span>S</span><span>SW</span><span>W</span><span>NW</span></div>
+                            <div class="needle-rotate" id="needle"><div class="needle-arrow"></div></div>
+                            <div class="wind-speed-center" id="compass-wind-speed">--</div>
+                        </div>
+                    </div>
+                    <div class="wind-stats-row">
+                        <div><i class="fas fa-tachometer-alt"></i> <span id="wind-speed">-- km/h</span></div>
+                        <div><i class="fas fa-compass"></i> <span id="wind-direction">--</span></div>
+                        <div><i class="fas fa-arrow-right"></i> <span id="wind-angle">--°</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics rows -->
+            <div class="metrics-row">
+                <div class="metric-item"><i class="fas fa-tint"></i><span id="humidity">--%</span><label>Humidity</label></div>
+                <div class="metric-item"><i class="fas fa-gauge-high"></i><span id="pressure">-- hPa</span><label>Pressure</label></div>
+                <div class="metric-item"><i class="fas fa-sun"></i><span id="uv-index">--</span><label>UV Index</label></div>
+                <div class="metric-item"><i class="fas fa-cloud-rain"></i><span id="precipitation">-- mm</span><label>Precipitation</label></div>
+                <div class="metric-item"><i class="fas fa-cloud"></i><span id="cloud-cover">--%</span><label>Cloud Cover</label></div>
+                <div class="metric-item"><i class="fas fa-temperature-low"></i><span id="feels-like">--°C</span><label>Feels Like</label></div>
+            </div>
+            <div class="metrics-row">
+                <div class="metric-item"><i class="fas fa-eye"></i><span id="visibility">-- km</span><label>Visibility</label></div>
+                <div class="metric-item"><i class="fas fa-water"></i><span id="rainfall">-- mm</span><label>Rainfall</label></div>
+                <div class="metric-item"><i class="fas fa-thermometer-half"></i><span id="dewpoint">--°C</span><label>Dew Point</label></div>
+                <div class="metric-item"><i class="fas fa-cloud-sun"></i><span id="weather-condition">--</span><label>Condition</label></div>
+            </div>
+
+            <!-- Extended Forecast & Hourly -->
+            <div class="extended-forecast-row">
+                <div class="forecast-card">
+                    <div class="card-header"><i class="fas fa-calendar-week"></i><h3>7-Day Forecast</h3><button id="refreshForecastBtn" class="subtle-btn"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+                    <div class="forecast-grid" id="weeklyForecastGrid"></div>
+                </div>
+                <div class="hourly-card">
+                    <div class="card-header"><i class="fas fa-chart-line"></i><h3>24-Hour Temperature Forecast</h3><button id="refreshHourlyBtn" class="subtle-btn"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+                    <div class="hourly-chart-container"><canvas id="hourlyTempChartMain" width="600" height="280" style="max-height:280px; width:100%"></canvas></div>
+                    <div class="hourly-scroll-list" id="hourlyScrollList"></div>
+                </div>
+            </div>
+
+            <!-- Marquee -->
+            <div class="innovation-marquee">
+                <marquee behavior="scroll" direction="left" scrollamount="5">
+                    🌟 Developed & Powered by Innovation Hub • District Science Centre, Purulia • Real-time weather data powered by Open-Meteo API • Location: Purulia, West Bengal, India (23.33°N, 86.37°E) • Data updates every 10 minutes 🌟
+                </marquee>
+            </div>
+
+            <!-- Footer -->
+            <footer class="dashboard-footer">
+                <div class="qr-credit">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=85x85&data=https://dscinnovationhub.github.io/dscinnovationhub/#" alt="QR Innovation Hub">
+                    <p>Scan for Innovation Hub Purulia • <span>© All Copyright Reserved 2026 | Live Weather Data from Open-Meteo</span></p>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
